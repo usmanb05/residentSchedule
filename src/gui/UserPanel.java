@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -22,6 +24,8 @@ public class UserPanel extends JPanel {
 	private JTextField lastNameField;
 	private JTextField emailField;
 	
+	private UserListener userListener;
+	
 	private JButton addUserBtn;
 	
 	public UserPanel() {
@@ -37,8 +41,23 @@ public class UserPanel extends JPanel {
 		emailField = new JTextField(10);
 		addUserBtn = new JButton("Add User");
 		
+		addUserBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String name = firstNameField.getText() + " " + lastNameField.getText();
+				String email = emailField.getText();
+				
+				//System.out.println(name + " " + email " from UserPanel Class);
+				
+				UserEvent ev = new UserEvent(this, name, email);
+				if (userListener != null) {
+					userListener.userEventOccurred(ev);
+				}
+			}
+			
+		});
 		
-		Border innerBorder = BorderFactory.createTitledBorder("Add Person");
+		
+		Border innerBorder = BorderFactory.createTitledBorder("Add Resident");
 		Border outBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outBorder, innerBorder));
 		layoutComponents();
@@ -100,5 +119,9 @@ public class UserPanel extends JPanel {
 		gc.anchor = GridBagConstraints.FIRST_LINE_END;
 		add(addUserBtn, gc);
 		
+	}
+	
+	public void setUserListener(UserListener listener) {
+		this.userListener = listener;
 	}
 }
