@@ -43,15 +43,21 @@ public class UserPanel extends JPanel {
 		
 		addUserBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				String name = firstNameField.getText() + " " + lastNameField.getText();
 				String email = emailField.getText();
 				
-				//System.out.println(name + " " + email " from UserPanel Class);
-				
-				UserEvent ev = new UserEvent(this, name, email);
-				if (userListener != null) {
-					userListener.userEventOccurred(ev);
+				if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty() || emailField.getText().isEmpty()) {
+					System.out.println("empty fields");
 				}
+				
+				else {
+					UserEvent ev = new UserEvent(this, name, email);
+					if (userListener != null) {
+						userListener.userEventOccurred(ev);
+					}
+				}
+				//System.out.println(name + " " + email " from UserPanel Class);
 			}
 			
 		});
