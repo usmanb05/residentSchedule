@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.security.SecureRandom;
 
 import javax.swing.JFrame;
 
@@ -47,5 +48,4 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 	}
 	
-
 }

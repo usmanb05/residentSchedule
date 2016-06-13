@@ -7,9 +7,10 @@ public class Resident {
 	private String email;
 	private String password;
 	
-	public Resident (String username, String email) {
+	public Resident (String username, String email, String password) {
 		this.username = username;
 		this.email = email;
+		this.password = password;
 		
 		this.id = count;
 		count++;
@@ -39,6 +40,7 @@ public class Resident {
 		this.email = email;
 	}
 
+	
 	public String getPassword() {
 		return password;
 	}
@@ -46,6 +48,5 @@ public class Resident {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
 	
 }

@@ -38,7 +38,7 @@ public class ResidentTableModel extends AbstractTableModel{
 		case 1:
 			return resident.getEmail();
 		case 2:
-			return resident.getUsername();
+			return resident.getPassword();
 		}
 		return null;
 	}
