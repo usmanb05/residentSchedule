@@ -30,11 +30,11 @@ public class Controller {
 		
 		
 		for(Resident resident1 : db.getPeople()){
-		    System.out.println(resident1.getUsername() + " " + resident1.getEmail() + resident1.getPassword() + " from Controller Class");
+		    System.out.println(resident1.getUsername() + " " + resident1.getEmail() + " " +resident1.getPassword() + " from Controller Class");
 		}
 		
 		
-		//System.out.println(resident.getUsername() + " " + resident.getEmail() +  " " + password + " from Controller Class");
+		//System.out.println(resident.getUsername() + " " + resident.getEmail() + " " + password + " from Controller Class");
 	}
 	
 	public String randomString( int len ){
