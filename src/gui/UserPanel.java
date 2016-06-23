@@ -57,18 +57,19 @@ public class UserPanel extends JPanel {
 				
 				if (firstNameField.getText().isEmpty() || lastNameField.getText().isEmpty() || emailField.getText().isEmpty()) {
 					System.out.println("empty fields from UserPanel class");
-					alertField.setText("   Please fill out all fields");
+					alertField.setText("Please fill out all fields");
 				}
 				
 				else if(!isValidEmailAddress(emailField.getText())) {
 					System.out.println("Invalid email address from UserPanel class");
-					alertField.setText("   Please enter in valid email address");
+					alertField.setText("Please enter in valid email address");
 				}
 				
 				else {
 					UserEvent ev = new UserEvent(this, name, email);
 					if (userListener != null) {
 						userListener.userEventOccurred(ev);
+						resetTextFields();
 					}
 				}
 			}
@@ -163,5 +164,12 @@ public class UserPanel extends JPanel {
 		   }
 		   return result;
 		}
+	
+	public void resetTextFields() {
+		firstNameField.setText("");
+		lastNameField.setText("");
+		emailField.setText("");
+		alertField.setText("User added");
+	}
 
 }
