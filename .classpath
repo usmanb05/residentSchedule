@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path=""/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/User/Documents/public_html/javax.mail.jar"/>
-	<classpathentry kind="lib" path="C:/Users/User/Documents/public_html/mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Usman/Documents/mysql-connector-java-5.1.39/mysql-connector-java-5.1.39-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
