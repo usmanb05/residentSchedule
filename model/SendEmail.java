@@ -11,9 +11,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
-
-	public static void main(String[] args) {
-
+	
+	public void send(String email, String password) {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -25,19 +24,19 @@ public class SendEmail {
 		Session session = Session.getDefaultInstance(props,
 			new javax.mail.Authenticator() {
 				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication("user","pass");
+					return new PasswordAuthentication("usmanbashirtest","uzzie2405");
 				}
 			});
 
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("usmanb05@gmail.com"));
+			message.setFrom(new InternetAddress("usmanbashirtest@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("juicyuzzie5@gmail.com"));
+					InternetAddress.parse(email));
 			message.setSubject("Testing Subject");
 			message.setText("Dear Mail Crawler," +
-					"\n\n Test");
+					"\n\n Your password is" + password);
 
 			Transport.send(message);
 
@@ -47,7 +46,7 @@ public class SendEmail {
 			throw new RuntimeException(e);
 		}
 	}
-		
+	
 }
 
 
