@@ -49,4 +49,8 @@ public class Resident {
 		this.password = password;
 	}
 	
+	public String toString() {
+		return username + ": " + email;
+	}
+	
 }

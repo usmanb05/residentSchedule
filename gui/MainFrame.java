@@ -2,9 +2,12 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.HeadlessException;
 import java.security.SecureRandom;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import controller.Controller;
 
@@ -14,6 +17,7 @@ public class MainFrame extends JFrame {
 	private UserPanel userPanel;
 	private Controller controller;
 	private ResidentTablePanel residentTablePanel;
+	
 	
 	public MainFrame() {
 		super("Resident Ranking Form");
@@ -27,8 +31,23 @@ public class MainFrame extends JFrame {
 		
 		userPanel.setUserListener(new UserListener() {
 			public void userEventOccurred(UserEvent e) {
-				controller.addPerson(e);
-				residentTablePanel.refresh();
+				String userEmail = e.getEmail();
+				
+				try {
+					if (controller.checkEmail(userEmail)) {
+						JOptionPane.showMessageDialog(MainFrame.this, "User Email already in database", "Database Message", JOptionPane.ERROR_MESSAGE);
+					}
+					else {
+						controller.addPerson(e);
+						residentTablePanel.refresh();
+						userPanel.setAlertField("User Added");
+					}
+				} catch (HeadlessException | SQLException e1) {
+					e1.printStackTrace();
+				}
+				
+				
+				
 			}
 		});
 		
@@ -46,6 +65,21 @@ public class MainFrame extends JFrame {
 		setSize(1200, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		
+		try {
+			controller.connect();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(MainFrame.this, "Cannot connect to database", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		try {
+			controller.load();
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(MainFrame.this, "Cannot load from database", "No data from Database", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		
+		
 	}
 	
 }

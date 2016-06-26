@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -35,7 +37,7 @@ public class UserPanel extends JPanel {
 	
 	public UserPanel() {
 		Dimension dim = getPreferredSize();
-		dim.width = 275;
+		dim.width = 280;
 		setPreferredSize(dim);
 		
 		firstNameLabel = new JLabel("First Name: ");
@@ -62,7 +64,7 @@ public class UserPanel extends JPanel {
 				
 				else if(!isValidEmailAddress(emailField.getText())) {
 					System.out.println("Invalid email address from UserPanel class");
-					alertField.setText("Please enter in valid email address");
+					alertField.setText("Please enter valid email address");
 				}
 				
 				else {
@@ -72,6 +74,24 @@ public class UserPanel extends JPanel {
 						resetTextFields();
 					}
 				}
+			}
+		});
+		
+		firstNameField.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				alertField.setText("");
+			}
+		});
+		
+		lastNameField.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				alertField.setText("");
+			}
+		});
+		
+		emailField.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				alertField.setText("");
 			}
 		});
 		
@@ -169,7 +189,11 @@ public class UserPanel extends JPanel {
 		firstNameField.setText("");
 		lastNameField.setText("");
 		emailField.setText("");
-		alertField.setText("User added");
+		//alertField.setText("User submitted");
+	}
+	
+	public void setAlertField(String text) {
+		alertField.setText(text);
 	}
 
 }
