@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage;
 
 public class SendEmail {
 	
-	public void send(String email, String password) {
+	public void send(String name, String email, String password) {
 		Properties props = new Properties();
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.socketFactory.port", "465");
@@ -35,8 +35,8 @@ public class SendEmail {
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse(email));
 			message.setSubject("Testing Subject");
-			message.setText("Dear Mail Crawler," +
-					"\n\n Your password is" + password);
+			message.setText("Dear  " + name + "," +
+					"\n\n Your password is " + password);
 
 			Transport.send(message);
 

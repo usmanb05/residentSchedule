@@ -9,7 +9,7 @@ import model.Resident;
 public class ResidentTableModel extends AbstractTableModel{
 	
 	private List<Resident> db;
-	private String[] colNames = {"Name", "Email", "Password Set"};
+	private String[] colNames = {"Name", "Email", "Password"};
 	
 	public String getColumnName(int column) {
 		return colNames[column];

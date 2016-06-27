@@ -1,6 +1,5 @@
 package gui;
 
-import java.math.BigInteger;
 import java.util.EventObject;
 
 import model.GeneratePassword;
@@ -9,17 +8,20 @@ public class UserEvent extends EventObject {
 	
 	private String username;
 	private String email;
+	private String password;
+	GeneratePassword genPassword = new GeneratePassword(); 
 	
 	public UserEvent(Object source) {
 		super(source);
 	}
 	
 	
-	public UserEvent(Object source, String username, String email) {
+	public UserEvent(Object source, String username, String email, int password) {
 		super(source);
 		
 		this.username = username;
 		this.email = email;
+		this.password = genPassword.randomString(password);
 	}
 
 	public String getUsername() {
@@ -36,6 +38,10 @@ public class UserEvent extends EventObject {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getPassword() {
+		return password;
 	}
 
 }

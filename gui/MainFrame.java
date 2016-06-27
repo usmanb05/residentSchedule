@@ -3,11 +3,11 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
-import java.security.SecureRandom;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import controller.Controller;
 
@@ -26,28 +26,40 @@ public class MainFrame extends JFrame {
 		
 		controller = new Controller();
 		
-		userPanel = new UserPanel();
+		userPanel = new UserPanel(this);
 		residentTablePanel = new ResidentTablePanel();
 		
 		userPanel.setUserListener(new UserListener() {
 			public void userEventOccurred(UserEvent e) {
+				String name = e.getUsername();
 				String userEmail = e.getEmail();
+				String password = e.getPassword();
 				
 				try {
 					if (controller.checkEmail(userEmail)) {
 						JOptionPane.showMessageDialog(MainFrame.this, "User Email already in database", "Database Message", JOptionPane.ERROR_MESSAGE);
 					}
 					else {
+						/*
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								progressDialog.setVisible(true);
+							}
+						});
+						*/
+						
+						//userPanel.setAlertField("User Added");
 						controller.addPerson(e);
 						residentTablePanel.refresh();
-						userPanel.setAlertField("User Added");
+						controller.emailPassword(name, userEmail, password);
+						
 					}
 				} catch (HeadlessException | SQLException e1) {
 					e1.printStackTrace();
 				}
 				
-				
 			}
+			
 		});
 		
 		residentTablePanel.setData(controller.getPeople());

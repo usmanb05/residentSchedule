@@ -14,10 +14,12 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 public class UserPanel extends JPanel {
@@ -35,10 +37,15 @@ public class UserPanel extends JPanel {
 	private JTextArea alertField;
 	private JButton addUserBtn;
 	
-	public UserPanel() {
+	private ProgressDialog progressDialog;
+
+	
+	public UserPanel(JFrame parent) {
 		Dimension dim = getPreferredSize();
 		dim.width = 280;
 		setPreferredSize(dim);
+		
+		progressDialog = new ProgressDialog(parent);
 		
 		firstNameLabel = new JLabel("First Name: ");
 		lastNameLabel = new JLabel("Last Name: ");
@@ -68,7 +75,15 @@ public class UserPanel extends JPanel {
 				}
 				
 				else {
-					UserEvent ev = new UserEvent(this, name, email);
+					
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
+							progressDialog.setVisible(true);
+						}
+					});
+					
+					alertField.setForeground(Color.GREEN);
+					UserEvent ev = new UserEvent(this, name, email, 10);
 					if (userListener != null) {
 						userListener.userEventOccurred(ev);
 						resetTextFields();

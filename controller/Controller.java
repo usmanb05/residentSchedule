@@ -11,7 +11,6 @@ import model.SendEmail;
 
 public class Controller {
 	Database db = new Database();
-	GeneratePassword password = new GeneratePassword(); 
 	SendEmail emailPass = new SendEmail();
 	
 	
@@ -47,9 +46,9 @@ public class Controller {
 	public void addPerson(UserEvent e) {
 		String name = e.getUsername();
 		String email = e.getEmail();
-		String newPassword = password.randomString(10);
+		String password = e.getPassword();
 		
-		Resident resident = new Resident(name, email, newPassword);
+		Resident resident = new Resident(name, email, password);
 		try {
 			db.addPerson(resident);
 		} catch (SQLException e1) {
@@ -65,8 +64,8 @@ public class Controller {
 		//System.out.println(resident.getUsername() + " " + resident.getEmail() + " " + password + " from Controller Class");
 	}
 	
-	public void emailPassword(String email, String password) {
-		emailPass.send(email, password);
+	public void emailPassword(String name, String email, String password) {
+		emailPass.send(name, email, password);
 	}
 	
 	
