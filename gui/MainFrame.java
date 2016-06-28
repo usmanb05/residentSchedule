@@ -3,8 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
-import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,6 +17,8 @@ public class MainFrame extends JFrame {
 	private UserPanel userPanel;
 	private Controller controller;
 	private ResidentTablePanel residentTablePanel;
+	private LoginDialog loginDialog;
+	private Preferences prefs;
 	
 	
 	public MainFrame() {
@@ -25,9 +27,12 @@ public class MainFrame extends JFrame {
 		getContentPane().setLayout(new BorderLayout());
 		
 		controller = new Controller();
-		
+		loginDialog = new LoginDialog(this);
 		userPanel = new UserPanel();
 		residentTablePanel = new ResidentTablePanel();
+		
+		prefs = Preferences.userRoot().node("db");
+		loginDialog.setLocationRelativeTo(null);
 		
 		userPanel.setUserListener(new UserListener() {
 			public void userEventOccurred(UserEvent e) {
@@ -48,10 +53,21 @@ public class MainFrame extends JFrame {
 				} catch (HeadlessException | SQLException e1) {
 					e1.printStackTrace();
 				}
-				
-				
 			}
 		});
+		
+		loginDialog.setLoginListener(new LoginListener() {
+
+			public void loginSet(String user, String password) {
+				prefs.put("user", user);
+				prefs.put("password", password);
+			}
+		});
+		
+		String user = prefs.get("user", "");
+		String password = prefs.get("password", "");
+		
+		loginDialog.setDefaults(user, password);
 		
 		residentTablePanel.setData(controller.getPeople());
 		
@@ -61,6 +77,8 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
+		loginDialog.setModal(true);
+		loginDialog.setVisible(true);
 		add(userPanel, BorderLayout.WEST);
 		add(residentTablePanel, BorderLayout.CENTER);
 		setMinimumSize(new Dimension(500, 400));
