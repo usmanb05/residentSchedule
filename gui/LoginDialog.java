@@ -53,7 +53,6 @@ public class LoginDialog extends JDialog{
 					loginListener.loginSet(user, new String(password));
 				}
 				
-				setVisible(false);
 			}
 		});
 		
@@ -136,11 +135,9 @@ public class LoginDialog extends JDialog{
 		add(buttonsPanel, BorderLayout.SOUTH);
 	}
 
-	public void setDefaults(String user, String password) {
-		userField.setText(user);
-		passField.setText(password);
+	public void setAlert(String text) {
+		alertField.setText(text);
 	}
-
 	public void setLoginListener(LoginListener listener) {
 			this.loginListener = listener;
 	}

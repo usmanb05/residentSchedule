@@ -18,21 +18,59 @@ public class MainFrame extends JFrame {
 	private Controller controller;
 	private ResidentTablePanel residentTablePanel;
 	private LoginDialog loginDialog;
-	private Preferences prefs;
 	
 	
 	public MainFrame() {
 		super("Resident Ranking Form");
 		
-		getContentPane().setLayout(new BorderLayout());
+		//getContentPane().setLayout(new BorderLayout());
 		
+		JFrame frame = new JFrame();
 		controller = new Controller();
 		loginDialog = new LoginDialog(this);
 		userPanel = new UserPanel();
 		residentTablePanel = new ResidentTablePanel();
 		
-		prefs = Preferences.userRoot().node("db");
+		try {
+			controller.connect();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(MainFrame.this, "Cannot connect to database", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		loginDialog.setModal(true);
+		loginDialog.setVisible(true);
 		loginDialog.setLocationRelativeTo(null);
+		loginDialog.setLoginListener(new LoginListener() {
+			public void loginSet(String email, String password) {
+				try {
+					if(controller.checkLogin(email, password)) {
+						try {
+							loginDialog.setVisible(false);
+							frame.setLayout(new BorderLayout());
+							add(userPanel, BorderLayout.WEST);
+							add(residentTablePanel, BorderLayout.CENTER);
+							controller.load();
+							residentTablePanel.refresh();
+							revalidate();
+						} catch (SQLException e1) {
+							JOptionPane.showMessageDialog(MainFrame.this, "Cannot load from database", "No data from Database", JOptionPane.ERROR_MESSAGE);
+						}
+					}
+					else {
+						loginDialog.setAlert("Incorrect Login, Try again");
+					}
+				} catch (SQLException e2) {
+					System.out.println("Could not check login");
+				}
+			}
+		});
+		
+		residentTablePanel.setData(controller.getPeople());
+		residentTablePanel.setResidentTableListener(new ResidentTableListener() {
+			public void rowDeleted(int row) {
+				controller.removePerson(row);
+			}
+		});
 		
 		userPanel.setUserListener(new UserListener() {
 			public void userEventOccurred(UserEvent e) {
@@ -56,50 +94,9 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		loginDialog.setLoginListener(new LoginListener() {
-
-			public void loginSet(String user, String password) {
-				prefs.put("user", user);
-				prefs.put("password", password);
-			}
-		});
-		
-		String user = prefs.get("user", "");
-		String password = prefs.get("password", "");
-		
-		loginDialog.setDefaults(user, password);
-		
-		residentTablePanel.setData(controller.getPeople());
-		
-		residentTablePanel.setResidentTableListener(new ResidentTableListener() {
-			public void rowDeleted(int row) {
-				controller.removePerson(row);
-			}
-		});
-		
-		loginDialog.setModal(true);
-		loginDialog.setVisible(true);
-		add(userPanel, BorderLayout.WEST);
-		add(residentTablePanel, BorderLayout.CENTER);
 		setMinimumSize(new Dimension(500, 400));
 		setSize(1200, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		
-		try {
-			controller.connect();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(MainFrame.this, "Cannot connect to database", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		try {
-			controller.load();
-		} catch (SQLException e1) {
-			JOptionPane.showMessageDialog(MainFrame.this, "Cannot load from database", "No data from Database", JOptionPane.ERROR_MESSAGE);
-		}
-		
-		
-		
 	}
-	
 }

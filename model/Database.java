@@ -10,6 +10,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import gui.MainFrame;
+
 public class Database {
 
 private List<Resident> people;
@@ -99,7 +103,6 @@ private Connection con;
 			System.out.println("Email: " + checkResult.getString(1));
 			
 		}
-		
 		statement.close();
 		
 	}
@@ -141,5 +144,24 @@ private Connection con;
 		if (result.next()) return true;
 		
 		else return false;
+	}
+	
+	public boolean checkLogin(String email, String password) throws SQLException {
+		String checkLoginSql= "select password from users where email=?";
+		PreparedStatement checkStatement = con.prepareStatement(checkLoginSql);
+		
+		checkStatement.setString(1, email);
+		
+		ResultSet results = checkStatement.executeQuery();
+		while (results.next()) {
+			String dbPassword = results.getString("password");
+			if (dbPassword.equals(password)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		return false;
 	}
 }

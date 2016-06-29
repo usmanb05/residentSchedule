@@ -26,6 +26,10 @@ public class Controller {
 		db.save();
 	}
 	
+	public boolean checkLogin(String email, String password) throws SQLException {
+		return db.checkLogin(email, password);
+	}
+	
 	public void disconnect() {
 		db.disconnect();
 	}

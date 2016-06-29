@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -19,8 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-
-import model.GeneratePassword;
 
 public class UserPanel extends JPanel {
 	
@@ -50,11 +50,27 @@ public class UserPanel extends JPanel {
 		emailField = new JTextField(10);
 		alertField = new JTextArea();
 		addUserBtn = new JButton("Add User");
+		addUserBtn.setEnabled(false);
 		
 		alertField.setForeground(Color.red);
+		alertField.setEditable(false);
+		
+		emailField.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				if(firstNameField.getText().length() == 0 || lastNameField.getText().length() == 0 || emailField.getText().length() == 0) {
+					addUserBtn.setEnabled(false);
+				}
+				
+				else{
+					addUserBtn.setEnabled(true);
+				}
+			}
+		});
 		
 		addUserBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				addUserBtn.setEnabled(false);
+				alertField.setForeground(Color.red);
 				
 				String name = firstNameField.getText() + " " + lastNameField.getText();
 				String email = emailField.getText();
@@ -70,7 +86,7 @@ public class UserPanel extends JPanel {
 				}
 				
 				else {
-					alertField.setForeground(Color.GREEN);
+					alertField.setForeground(Color.blue);
 					UserEvent ev = new UserEvent(this, name, email, 10);
 					if (userListener != null) {
 						userListener.userEventOccurred(ev);
@@ -83,18 +99,21 @@ public class UserPanel extends JPanel {
 		firstNameField.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				alertField.setText("");
+				alertField.setForeground(Color.red);
 			}
 		});
 		
 		lastNameField.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				alertField.setText("");
+				alertField.setForeground(Color.red);
 			}
 		});
 		
 		emailField.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				alertField.setText("");
+				alertField.setForeground(Color.red);
 			}
 		});
 		

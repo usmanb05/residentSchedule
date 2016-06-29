@@ -1,5 +1,8 @@
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
+import gui.MainFrame;
 import model.Database;
 import model.SendEmail;
 
@@ -9,9 +12,32 @@ public class TestDatabase {
 		System.out.println("Running test database");
 		
 		Database db = new Database();
-		SendEmail email = new SendEmail();
+		//SendEmail email = new SendEmail();
 		
 		
+		try {
+			db.connect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			if(db.checkLogin("usmanb05@gmail.com", "SCxTESIlUr")) {
+				try {
+					System.out.println("yes");
+					db.load();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+			else {
+				System.out.println("wrong login");
+			}
+		} catch (SQLException e2) {
+			System.out.println("Could not check login");
+		}
+		
+		/*
 		try {
 			db.connect();
 		} catch (Exception e) {
@@ -38,6 +64,7 @@ public class TestDatabase {
 		}
 		
 		db.disconnect();
+		*/
 	}
 
 }
