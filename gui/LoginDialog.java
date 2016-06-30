@@ -8,6 +8,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -18,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 
 public class LoginDialog extends JDialog{
@@ -47,12 +50,10 @@ public class LoginDialog extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				String user = userField.getText();
 				char[] password = passField.getPassword();
-				//System.out.println(user + ": " + new String(password));
 				
 				if(loginListener != null) {
 					loginListener.loginSet(user, new String(password));
 				}
-				
 			}
 		});
 		
@@ -60,6 +61,19 @@ public class LoginDialog extends JDialog{
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				System.exit(0);
+			}
+		});
+		
+		passField.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER && !(userField.getText().length() == 0) && !(passField.getPassword().length == 0)) {
+					String user = userField.getText();
+					char[] password = passField.getPassword();
+					
+					if(loginListener != null) {
+						loginListener.loginSet(user, new String(password));
+					}
+				}
 			}
 		});
 		

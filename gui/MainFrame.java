@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.sql.SQLException;
-import java.util.prefs.Preferences;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,6 +16,7 @@ public class MainFrame extends JFrame {
 	private UserPanel userPanel;
 	private Controller controller;
 	private ResidentTablePanel residentTablePanel;
+	private RankingTablePanel rankingTablePanel;
 	private LoginDialog loginDialog;
 	
 	
@@ -30,6 +30,7 @@ public class MainFrame extends JFrame {
 		loginDialog = new LoginDialog(this);
 		userPanel = new UserPanel();
 		residentTablePanel = new ResidentTablePanel();
+		rankingTablePanel = new RankingTablePanel();
 		
 		try {
 			controller.connect();
@@ -46,6 +47,9 @@ public class MainFrame extends JFrame {
 					if(controller.checkLogin(email, password)) {
 						try {
 							loginDialog.setVisible(false);
+							setMinimumSize(new Dimension(900, 400));
+							setSize(1200, 500);
+							setVisible(true);
 							frame.setLayout(new BorderLayout());
 							add(userPanel, BorderLayout.WEST);
 							add(residentTablePanel, BorderLayout.CENTER);
@@ -94,9 +98,8 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		setMinimumSize(new Dimension(500, 400));
+		setMinimumSize(new Dimension(800, 600));
 		setSize(1200, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
 	}
 }

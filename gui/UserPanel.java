@@ -60,9 +60,32 @@ public class UserPanel extends JPanel {
 				if(firstNameField.getText().length() == 0 || lastNameField.getText().length() == 0 || emailField.getText().length() == 0) {
 					addUserBtn.setEnabled(false);
 				}
-				
-				else{
+				else {
 					addUserBtn.setEnabled(true);
+				}
+			}
+		});
+		
+		emailField.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER && !(firstNameField.getText().length() == 0) && !(lastNameField.getText().length() == 0) && !(emailField.getText().length() == 0)) {
+					
+					String name = firstNameField.getText() + " " + lastNameField.getText();
+					String email = emailField.getText();
+					
+					if (!isValidEmailAddress(emailField.getText())) {
+						System.out.println("Invalid email address from UserPanel class");
+						alertField.setText("Please enter valid email address");
+					}
+					
+					else {
+						alertField.setForeground(Color.blue);
+						UserEvent ev = new UserEvent(this, name, email, 10);
+						if (userListener != null) {
+							userListener.userEventOccurred(ev);
+							resetTextFields();
+						}
+					}
 				}
 			}
 		});
@@ -121,8 +144,6 @@ public class UserPanel extends JPanel {
 		Border outBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outBorder, innerBorder));
 		layoutComponents();
-		
-		
 	}
 	
 	public void layoutComponents() {

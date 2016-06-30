@@ -19,7 +19,6 @@ public class ResidentTableModel extends AbstractTableModel{
 		this.db = db;
 	}
 	
-	
 	@Override
 	public int getColumnCount() {
 		return colNames.length;
