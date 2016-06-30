@@ -17,10 +17,12 @@ import gui.MainFrame;
 public class Database {
 
 private List<Resident> people;
+private List<Ranking> rankings;
 private Connection con;
 	
 	public Database () {
 		people = new LinkedList<Resident>();
+		rankings = new LinkedList<Ranking>();
 	}
 	
 	public void connect() throws Exception {
@@ -68,9 +70,50 @@ private Connection con;
 			Resident user = new Resident(name, email, password);
 			
 			people.add(user);
-			
 		}
 		//System.out.println(people + " - from Database load()");
+		results.close();
+		selectStatement.close();
+	}
+	
+	public void loadRanks() throws SQLException {
+		rankings.clear();
+		
+		String sql = "select allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW from users where email=?";
+		PreparedStatement selectStatement = con.prepareStatement(sql);
+		
+		selectStatement.setString(1, "1");
+		
+		ResultSet results = selectStatement.executeQuery();
+		
+		while(results.next()) {
+			int allergy = results.getInt("allergy");
+			int pulmonary = results.getInt("pulmonary");
+			int cardiology = results.getInt("cardiology");
+			int psychiatry = results.getInt("psychiatry");
+			int dermatology = results.getInt("dermatology");
+			int endocrine = results.getInt("endocrine");
+			int ent = results.getInt("ent");
+			int genetics = results.getInt("genetics");
+			int gi = results.getInt("gi");
+			int gynecology = results.getInt("gynecology");
+			int hematology = results.getInt("hematology");
+			int idisease = results.getInt("idisease");
+			int neurology = results.getInt("neurology");
+			int ophthalmology = results.getInt("ophthalmology");
+			int orthopedics = results.getInt("orthopedics");
+			int palliative = results.getInt("palliative");
+			int renal = results.getInt("renal");
+			int rheumatology = results.getInt("rheumatology");
+			int sports = results.getInt("sports");
+			int toxicology = results.getInt("toxicology");
+			int sevenW = results.getInt("sevenW");
+			int nineW = results.getInt("nineW");
+			
+			Ranking ranks = new Ranking(allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW);
+			rankings.add(ranks);
+		}
+		//System.out.println(rankings + " - from Database loadRanks()");
 		results.close();
 		selectStatement.close();
 	}

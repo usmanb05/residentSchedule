@@ -15,7 +15,7 @@ public class Ranking {
 	private int hematology;
 	private int id;
 	private int neurology;
-	private int opthalmology;
+	private int ophthalmology;
 	private int orthopedics;
 	private int palliative;
 	private int renal;
@@ -26,7 +26,7 @@ public class Ranking {
 	private int nineW;
 	
 	public Ranking(int allergy, int pulmonary, int cardiology, int psychiatry, int dermatology, int endocrine, int ent, int genetics, int gi, int gynecology, int hematology, int id, int neurology, 
-			int opthalmology, int orthopedics, int palliative, int renal, int rheumatology, int sports, int toxicology, int sevenW, int nineW) {
+			int ophthalmology, int orthopedics, int palliative, int renal, int rheumatology, int sports, int toxicology, int sevenW, int nineW) {
 		
 		this.allergy = allergy;
 		this.pulmonary = pulmonary;
@@ -41,7 +41,7 @@ public class Ranking {
 		this.hematology = hematology;
 		this.id = id;
 		this.neurology = neurology;
-		this.opthalmology = opthalmology;
+		this.ophthalmology = ophthalmology;
 		this.orthopedics = orthopedics;
 		this.palliative = palliative;
 		this.renal = renal;
@@ -157,12 +157,12 @@ public class Ranking {
 		this.neurology = neurology;
 	}
 
-	public int getOpthalmology() {
-		return opthalmology;
+	public int getOphthalmology() {
+		return ophthalmology;
 	}
 
-	public void setOpthalmology(int opthalmology) {
-		this.opthalmology = opthalmology;
+	public void setOpthalmology(int ophthalmology) {
+		this.ophthalmology = ophthalmology;
 	}
 
 	public int getOrthopedics() {

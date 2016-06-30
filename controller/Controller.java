@@ -38,6 +38,10 @@ public class Controller {
 		db.load();
 	}
 	
+	public void loadRanks() throws SQLException {
+		db.loadRanks();
+	}
+	
 	public boolean checkEmail(String userEmail) throws SQLException {
 		return db.checkUserEmail(userEmail);
 	}

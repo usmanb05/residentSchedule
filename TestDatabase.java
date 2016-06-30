@@ -22,7 +22,7 @@ public class TestDatabase {
 		}
 		
 		try {
-			if(db.checkLogin("usmanb05@gmail.com", "SCxTESIlUr")) {
+			if(db.checkLogin("1", "1")) {
 				try {
 					System.out.println("yes");
 					db.load();
@@ -35,6 +35,13 @@ public class TestDatabase {
 			}
 		} catch (SQLException e2) {
 			System.out.println("Could not check login");
+		}
+		
+		try {
+			db.loadRanks();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		/*

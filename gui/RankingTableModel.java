@@ -9,15 +9,15 @@ import model.Ranking;
 public class RankingTableModel extends AbstractTableModel {
 	
 	private List<Ranking> db;
-	private String[] rowNames = {"Allergy", "Pulmonary", "Cardiology", "Psychiatry", "Dermatology", "Endocrine", "ENT", "Genetics", "GI", "Gynecology", "Hematology", "ID", "Neurology", "Opthalmology", "Orthopedics", "Palliative Care", "Renal", "Rheumatology", "Sports Medicine", "Toxicology", "7W", "9W"};
+	private String[] colNames = {"Allergy", "Pulmonary", "Cardiology", "Psychiatry", "Dermatology", "Endocrine", "ENT", "Genetics", "GI", "Gynecology", "Hematology", "ID", "Neurology", "Ophthalmology", "Orthopedics", "Palliative Care", "Renal", "Rheumatology", "Sports Medicine", "Toxicology", "7W", "9W"};
 
-	public String getRowNames(int row) {
-		return rowNames[row];
+	public String getColumnName(int column) {
+		return colNames[column];
 	}
 	
 	@Override
 	public int getColumnCount() {
-		return 1;
+		return colNames.length;
 	}
 	
 	public void setData(List<Ranking> db) {
@@ -26,14 +26,14 @@ public class RankingTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		return rowNames.length;
+		return db.size();
 	}
 
 	@Override
 	public Object getValueAt(int row, int col) {
 		Ranking ranking = db.get(row);
 		
-		switch(row) {
+		switch(col) {
 		case 0:
 			return ranking.getAllergy();
 		case 1:
@@ -61,7 +61,7 @@ public class RankingTableModel extends AbstractTableModel {
 		case 12:
 			return ranking.getNeurology();
 		case 13:
-			return ranking.getOpthalmology();
+			return ranking.getOphthalmology();
 		case 14:
 			return ranking.getOrthopedics();
 		case 15:
