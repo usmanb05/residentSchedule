@@ -22,7 +22,7 @@ public class TestDatabase {
 		}
 		
 		try {
-			if(db.checkLogin("1", "1")) {
+			if(db.checkLogin("admin", "admin")) {
 				try {
 					System.out.println("yes");
 					db.load();

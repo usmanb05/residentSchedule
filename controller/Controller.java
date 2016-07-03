@@ -6,6 +6,7 @@ import java.util.List;
 import gui.UserEvent;
 import model.Database;
 import model.GeneratePassword;
+import model.Ranking;
 import model.Resident;
 import model.SendEmail;
 
@@ -16,6 +17,10 @@ public class Controller {
 	
 	public List<Resident> getPeople() {
 		return db.getPeople();
+	}
+	
+	public List<Ranking> getRanking() {
+		return db.getRanking();
 	}
 	
 	public void connect() throws Exception {

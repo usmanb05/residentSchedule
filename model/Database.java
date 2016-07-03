@@ -71,7 +71,7 @@ private Connection con;
 			
 			people.add(user);
 		}
-		//System.out.println(people + " - from Database load()");
+		System.out.println(people + " - from Database load()");
 		results.close();
 		selectStatement.close();
 	}
@@ -82,7 +82,7 @@ private Connection con;
 		String sql = "select allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW from users where email=?";
 		PreparedStatement selectStatement = con.prepareStatement(sql);
 		
-		selectStatement.setString(1, "1");
+		selectStatement.setString(1, "admin");
 		
 		ResultSet results = selectStatement.executeQuery();
 		
@@ -113,7 +113,7 @@ private Connection con;
 			Ranking ranks = new Ranking(allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW);
 			rankings.add(ranks);
 		}
-		//System.out.println(rankings + " - from Database loadRanks()");
+		System.out.println(rankings + " - from Database loadRanks()");
 		results.close();
 		selectStatement.close();
 	}
@@ -175,6 +175,10 @@ private Connection con;
 	
 	public List<Resident> getPeople() {
 		return Collections.unmodifiableList(people);
+	}
+	
+	public List<Ranking> getRanking() {
+		return Collections.unmodifiableList(rankings);
 	}
 	
 	public boolean checkUserEmail(String userEmail) throws SQLException {

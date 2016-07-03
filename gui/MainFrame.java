@@ -70,6 +70,8 @@ public class MainFrame extends JFrame {
 		});
 		
 		residentTablePanel.setData(controller.getPeople());
+		//rankingTablePanel.setData(controller.getRanking());
+		
 		residentTablePanel.setResidentTableListener(new ResidentTableListener() {
 			public void rowDeleted(int row) {
 				controller.removePerson(row);

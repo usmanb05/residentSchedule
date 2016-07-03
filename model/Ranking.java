@@ -230,7 +230,7 @@ public class Ranking {
 	}
 	
 	public String toString() {
-		return "Allergy is ranked: " + allergy + "."; 
+		return allergy + " " + pulmonary + " " + cardiology + " " + psychiatry + " " + dermatology + " " + endocrine + " " + ent + " " + genetics + " " + gi + " " + gynecology + " " + hematology + " " + id + " " + neurology + " " + ophthalmology + " " + orthopedics + " " + palliative + " " + renal + " " + rheumatology + " " + sports + " " + toxicology + " " + sevenW + " " + nineW; 
 	}
 	
 
