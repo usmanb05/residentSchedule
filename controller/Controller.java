@@ -51,6 +51,9 @@ public class Controller {
 		return db.checkUserEmail(userEmail);
 	}
 	
+	public boolean isAdmin(String email) throws SQLException {
+		return db.isAdmin(email);
+	}
 	
 	public void removePerson(int index) {
 		db.removePerson(index);

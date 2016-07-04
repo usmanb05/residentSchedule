@@ -17,6 +17,8 @@ public class TestDatabase {
 		
 		try {
 			db.connect();
+			boolean isAdmin = db.isAdmin("admin");
+			System.out.println(isAdmin ? "is admin" : "not admin");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -24,7 +26,7 @@ public class TestDatabase {
 		try {
 			if(db.checkLogin("admin", "admin")) {
 				try {
-					System.out.println("yes");
+					System.out.println("Login is valid");
 					db.load();
 				} catch (SQLException e1) {
 					e1.printStackTrace();

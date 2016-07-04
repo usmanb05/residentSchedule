@@ -26,7 +26,7 @@ public class RankingTableModel extends AbstractTableModel {
 
 	@Override
 	public int getRowCount() {
-		System.out.println(db.size());
+		//System.out.println(db.size());
 		return 1;
 	}
 

@@ -18,6 +18,8 @@ public class MainFrame extends JFrame {
 	private ResidentTablePanel residentTablePanel;
 	private RankingTablePanel rankingTablePanel;
 	private LoginDialog loginDialog;
+	private RankingTableDialog rankingTableDialog;
+	private SurveyPanel surveyPanel;
 	
 	
 	public MainFrame() {
@@ -29,8 +31,10 @@ public class MainFrame extends JFrame {
 		controller = new Controller();
 		loginDialog = new LoginDialog(this);
 		userPanel = new UserPanel();
+		surveyPanel = new SurveyPanel();
 		residentTablePanel = new ResidentTablePanel();
 		rankingTablePanel = new RankingTablePanel();
+		rankingTableDialog = new RankingTableDialog(this);
 		
 		try {
 			controller.connect();
@@ -47,15 +51,44 @@ public class MainFrame extends JFrame {
 					if(controller.checkLogin(email, password)) {
 						try {
 							loginDialog.setVisible(false);
-							setMinimumSize(new Dimension(900, 400));
-							setSize(1200, 500);
-							setVisible(true);
-							frame.setLayout(new BorderLayout());
-							add(userPanel, BorderLayout.WEST);
-							add(residentTablePanel, BorderLayout.CENTER);
-							controller.load();
-							residentTablePanel.refresh();
-							revalidate();
+							
+							boolean isAdmin = controller.isAdmin(email);
+							if (isAdmin) {
+								setMinimumSize(new Dimension(1600, 800));
+								setSize(1600, 800);
+								setVisible(true);
+								frame.setLayout(new BorderLayout());
+								add(userPanel, BorderLayout.WEST);
+								add(residentTablePanel, BorderLayout.CENTER);
+								add(surveyPanel, BorderLayout.EAST);
+								controller.load();
+								controller.loadRanks();
+								residentTablePanel.refresh();
+								revalidate();
+								
+								rankingTableDialog.setModal(false);
+								rankingTableDialog.setVisible(false);
+								//rankingTableDialog.setLocation(null);
+							}
+							
+							else {
+								setMinimumSize(new Dimension(400, 800));
+								setSize(400, 800);
+								setVisible(true);
+								frame.setLayout(new BorderLayout());
+								//add(userPanel, BorderLayout.WEST);
+								//add(residentTablePanel, BorderLayout.CENTER);
+								add(surveyPanel, BorderLayout.WEST);
+								controller.load();
+								controller.loadRanks();
+								residentTablePanel.refresh();
+								revalidate();
+								
+								rankingTableDialog.setModal(false);
+								rankingTableDialog.setVisible(false);
+								//rankingTableDialog.setLocation(null);
+							}
+							
 						} catch (SQLException e1) {
 							JOptionPane.showMessageDialog(MainFrame.this, "Cannot load from database", "No data from Database", JOptionPane.ERROR_MESSAGE);
 						}
@@ -68,9 +101,10 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
+				
 		
 		residentTablePanel.setData(controller.getPeople());
-		//rankingTablePanel.setData(controller.getRanking());
+		rankingTablePanel.setData(controller.getRanking());
 		
 		residentTablePanel.setResidentTableListener(new ResidentTableListener() {
 			public void rowDeleted(int row) {
@@ -100,8 +134,8 @@ public class MainFrame extends JFrame {
 			}
 		});
 		
-		setMinimumSize(new Dimension(800, 600));
-		setSize(1200, 500);
+		setMinimumSize(new Dimension(1600, 1000));
+		setSize(1600, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 }

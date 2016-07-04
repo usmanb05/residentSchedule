@@ -10,10 +10,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
-import gui.MainFrame;
-
 public class Database {
 
 private List<Resident> people;
@@ -71,10 +67,27 @@ private Connection con;
 			
 			people.add(user);
 		}
-		System.out.println(people + " - from Database load()");
+		//System.out.println(people + " - from Database load()");
 		results.close();
 		selectStatement.close();
 	}
+	
+	public boolean isAdmin(String email) throws SQLException {
+		String sql = "select email from users where email=?";
+		PreparedStatement selectStatement = con.prepareStatement(sql);
+		
+		selectStatement.setString(1, email);
+		
+		ResultSet results = selectStatement.executeQuery();
+		
+		while(results.next()) {
+			if(results.getString("email").equals("admin")) {
+				return true;
+			}
+			else return false;
+		}
+			return false;	
+		}
 	
 	public void loadRanks() throws SQLException {
 		rankings.clear();
@@ -113,7 +126,7 @@ private Connection con;
 			Ranking ranks = new Ranking(allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW);
 			rankings.add(ranks);
 		}
-		System.out.println(rankings + " - from Database loadRanks()");
+		//System.out.println(rankings + " - from Database loadRanks()");
 		results.close();
 		selectStatement.close();
 	}
