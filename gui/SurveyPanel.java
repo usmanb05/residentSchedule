@@ -19,6 +19,7 @@ public class SurveyPanel extends JPanel {
 	private JTextArea infoArea;
 	private JButton submitBtn;
 	private final int totalForms = 22;
+	private SurveyListener surveyListener;
 	
 	private JLabel[] labels = new JLabel[totalForms];
 	private JTextField[] fields = new JTextField[totalForms];
@@ -88,6 +89,10 @@ public class SurveyPanel extends JPanel {
 				for (int i = 0; i < totalForms; i++) {
 					formArray[i] = fields[i].getText();
 					System.out.print(formArray[i] + " ");
+				}
+				
+				if (surveyListener != null) {
+					surveyListener.surveyEventOccurred(formArray);
 				}
 			}
 		});
@@ -225,5 +230,9 @@ public class SurveyPanel extends JPanel {
 		add(psychiatryField, gc);
 		*/
 		
+	}
+	
+	public void setSurveyListener(SurveyListener listener) {
+		this.surveyListener = listener;
 	}
 }

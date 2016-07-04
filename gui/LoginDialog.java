@@ -109,7 +109,7 @@ public class LoginDialog extends JDialog{
 		// first row
 		gc.anchor = GridBagConstraints.SOUTHEAST;
 		gc.insets = rightPadding;
-		controlsPanel.add(new JLabel("Username: "), gc);
+		controlsPanel.add(new JLabel("Email Address: "), gc);
 		gc.gridx++;
 		gc.anchor = GridBagConstraints.SOUTHWEST;
 		gc.insets = noPadding;

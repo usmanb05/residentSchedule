@@ -124,6 +124,9 @@ public class MainFrame extends JFrame {
 		
 		add(userPanel, BorderLayout.WEST);
 		add(residentTablePanel, BorderLayout.CENTER);
+		
+		rankingTablePanel.setPreferredSize(new Dimension (1600, 100));
+		add(rankingTablePanel, BorderLayout.SOUTH);
 		add(surveyPanel, BorderLayout.EAST);
 	}
 	
@@ -141,8 +144,8 @@ public class MainFrame extends JFrame {
 		residentTablePanel.refresh();
 		revalidate();
 		
-		rankingTableDialog.setModal(false);
-		rankingTableDialog.setVisible(false);
+		//rankingTableDialog.setModal(false);
+		//rankingTableDialog.setVisible(false);
 		//rankingTableDialog.setLocation(null);
 	}
 }
