@@ -26,8 +26,8 @@ public class MainFrame extends JFrame {
 		super("Resident Ranking Form");
 		
 		//getContentPane().setLayout(new BorderLayout());
+		setLayout(new BorderLayout());
 		
-		JFrame frame = new JFrame();
 		controller = new Controller();
 		loginDialog = new LoginDialog(this);
 		userPanel = new UserPanel();
@@ -51,42 +51,13 @@ public class MainFrame extends JFrame {
 					if(controller.checkLogin(email, password)) {
 						try {
 							loginDialog.setVisible(false);
-							
 							boolean isAdmin = controller.isAdmin(email);
 							if (isAdmin) {
-								setMinimumSize(new Dimension(1600, 800));
-								setSize(1600, 800);
-								setVisible(true);
-								frame.setLayout(new BorderLayout());
-								add(userPanel, BorderLayout.WEST);
-								add(residentTablePanel, BorderLayout.CENTER);
-								add(surveyPanel, BorderLayout.EAST);
-								controller.load();
-								controller.loadRanks();
-								residentTablePanel.refresh();
-								revalidate();
-								
-								rankingTableDialog.setModal(false);
-								rankingTableDialog.setVisible(false);
-								//rankingTableDialog.setLocation(null);
+								setAdminView();
+								loadData();
 							}
-							
 							else {
-								setMinimumSize(new Dimension(400, 800));
-								setSize(400, 800);
-								setVisible(true);
-								frame.setLayout(new BorderLayout());
-								//add(userPanel, BorderLayout.WEST);
-								//add(residentTablePanel, BorderLayout.CENTER);
-								add(surveyPanel, BorderLayout.WEST);
-								controller.load();
-								controller.loadRanks();
-								residentTablePanel.refresh();
-								revalidate();
-								
-								rankingTableDialog.setModal(false);
-								rankingTableDialog.setVisible(false);
-								//rankingTableDialog.setLocation(null);
+								setUserView();
 							}
 							
 						} catch (SQLException e1) {
@@ -137,5 +108,41 @@ public class MainFrame extends JFrame {
 		setMinimumSize(new Dimension(1600, 1000));
 		setSize(1600, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public void setUserView() {
+		setMinimumSize(new Dimension(400, 600));
+		setSize(400, 600);
+		setVisible(true);
+		add(surveyPanel, BorderLayout.WEST);
+	}
+	
+	public void setAdminView() {
+		setMinimumSize(new Dimension(1600, 800));
+		setSize(1600, 800);
+		setVisible(true);
+		
+		add(userPanel, BorderLayout.WEST);
+		add(residentTablePanel, BorderLayout.CENTER);
+		add(surveyPanel, BorderLayout.EAST);
+	}
+	
+	public void loadData() {
+		try {
+			controller.load();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			controller.loadRanks();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		residentTablePanel.refresh();
+		revalidate();
+		
+		rankingTableDialog.setModal(false);
+		rankingTableDialog.setVisible(false);
+		//rankingTableDialog.setLocation(null);
 	}
 }
