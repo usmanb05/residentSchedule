@@ -35,6 +35,7 @@ public class SurveyPanel extends JPanel {
 	public SurveyPanel() {
 		Dimension dim = getPreferredSize();
 		dim.width = 400;
+		//dim.height = 300;
 		setPreferredSize(dim);
 		
 		infoArea = new JTextArea();

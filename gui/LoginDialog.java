@@ -80,6 +80,7 @@ public class LoginDialog extends JDialog{
 		setSize(420, 200);
 		setVisible(true);
 		setLocationRelativeTo(null);
+		
 	}
 	
 	private void layoutControls() {

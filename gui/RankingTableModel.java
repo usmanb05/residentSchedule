@@ -10,7 +10,7 @@ public class RankingTableModel extends AbstractTableModel {
 	
 	private List<Ranking> db;
 	private String[] colNames = {"Allergy", "Pulmonary", "Cardiology", "Psychiatry", "Dermatology", "Endocrine", "ENT", "Genetics", "GI", "Gynecology", "Hematology", "ID", "Neurology", "Ophthalmology", "Orthopedics", "Palliative Care", "Renal", "Rheumatology", "Sports Medicine", "Toxicology", "7W", "9W"};
-
+	
 	public String getColumnName(int column) {
 		return colNames[column];
 	}
@@ -27,7 +27,7 @@ public class RankingTableModel extends AbstractTableModel {
 	@Override
 	public int getRowCount() {
 		//System.out.println(db.size());
-		return 1;
+		return db.size();
 	}
 
 	@Override

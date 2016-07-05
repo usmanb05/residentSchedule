@@ -14,11 +14,13 @@ public class Database {
 
 private List<Resident> people;
 private List<Ranking> rankings;
+private List<Survey> surveys;
 private Connection con;
 	
 	public Database () {
 		people = new LinkedList<Resident>();
 		rankings = new LinkedList<Ranking>();
+		surveys = new LinkedList<Survey>();
 	}
 	
 	public void connect() throws Exception {
@@ -91,13 +93,14 @@ private Connection con;
 	
 	public void loadRanks() throws SQLException {
 		rankings.clear();
+		surveys.clear();
 		
-		String sql = "select allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW from users where email=?";
+		String sql = "select username, allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW from users where submission=?";
 		PreparedStatement selectStatement = con.prepareStatement(sql);
 		final String[] fieldNames = {"allergy", "pulmonary", "cardiology", "psychiatry", "dermatology", "endocrine", "ent", "genetics", "gi", "gynecology", "hematology", "idisease", "neurology", "ophthalmology", "orthopedics", "palliative", "renal", "rheumatology", "sports", "toxicology", "sevenW", "nineW"};
 		int[] data = new int[22];
 		
-		selectStatement.setString(1, "admin");
+		selectStatement.setInt(1, 1);
 		
 		ResultSet results = selectStatement.executeQuery();
 		
@@ -108,7 +111,48 @@ private Connection con;
 			
 			Ranking ranks = new Ranking(data);
 			rankings.add(ranks);
+			
+			String name = results.getString("username");
+			String one = "";
+			String two = "";
+			String three = "";
+			String four = "";
+			String five = "";
+			String six = "";
+			
+			for (int i = 0; i < data.length; i++) {
+				int value = 0;
+				if (data[i] > 0) {
+					value = data[i];
+					
+					switch(value) {
+					case 1:
+						one = fieldNames[i];
+						break;
+					case 2:
+						two = fieldNames[i];
+						break;
+					case 3:
+						three = fieldNames[i];
+						break;
+					case 4:
+						four = fieldNames[i];
+						break;
+					case 5:
+						five  = fieldNames[i];
+						break;
+					case 6:
+						six = fieldNames[i];
+						break;
+					}
+				}
+			}
+			Survey user = new Survey(name, one, two, three, four, five, six);
+			surveys.add(user);
 		}
+		
+		// for survey class
+		
 		//System.out.println(rankings + " - from Database loadRanks()");
 		results.close();
 		selectStatement.close();
@@ -177,6 +221,10 @@ private Connection con;
 		return Collections.unmodifiableList(rankings);
 	}
 	
+	public List<Survey> getSurveys() {
+		return Collections.unmodifiableList(surveys);
+	}
+	
 	public boolean checkUserEmail(String userEmail) throws SQLException {
 		String checkEmailSql = "select email from users where email=?";
 		PreparedStatement checkStatement = con.prepareStatement(checkEmailSql);
@@ -191,7 +239,7 @@ private Connection con;
 	
 	public void submitFields(Ranking fields, String email) throws SQLException{
 
-		String updataeSql = "update users set allergy=?, pulmonary=?, cardiology=?, psychiatry=?, dermatology=?, endocrine=?, ent=?, genetics=?, gi=?, gynecology=?, hematology=?, idisease=?, neurology=?, ophthalmology=?, orthopedics=?, palliative=?, renal=?, rheumatology=?, sports=?, toxicology=?, sevenW=?, nineW=? where email=?";
+		String updataeSql = "update users set allergy=?, pulmonary=?, cardiology=?, psychiatry=?, dermatology=?, endocrine=?, ent=?, genetics=?, gi=?, gynecology=?, hematology=?, idisease=?, neurology=?, ophthalmology=?, orthopedics=?, palliative=?, renal=?, rheumatology=?, sports=?, toxicology=?, sevenW=?, nineW=?, submission=? where email=?";
 		PreparedStatement updateStatement = con.prepareStatement(updataeSql);
 		
 		int col = 1;
@@ -218,6 +266,7 @@ private Connection con;
 			updateStatement.setInt(col++, fields.getToxicology());
 			updateStatement.setInt(col++, fields.getSevenW());
 			updateStatement.setInt(col++, fields.getNineW());
+			updateStatement.setInt(col++, 1);
 			updateStatement.setString(col++, email);
 			
 			updateStatement.executeUpdate();

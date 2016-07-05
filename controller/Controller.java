@@ -9,6 +9,7 @@ import model.GeneratePassword;
 import model.Ranking;
 import model.Resident;
 import model.SendEmail;
+import model.Survey;
 
 public class Controller {
 	Database db = new Database();
@@ -21,6 +22,10 @@ public class Controller {
 	
 	public List<Ranking> getRanking() {
 		return db.getRanking();
+	}
+	
+	public List<Survey> getSurveys() {
+		return db.getSurveys();
 	}
 	
 	public void connect() throws Exception {

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JSplitPane;
 
 import controller.Controller;
 import model.Ranking;
@@ -21,6 +22,8 @@ public class MainFrame extends JFrame {
 	private LoginDialog loginDialog;
 	private SurveyPanel surveyPanel;
 	private String userEmail;
+	private JSplitPane splitPane;
+	private ToolBar toolBar;
 	
 	
 	public MainFrame() {
@@ -30,11 +33,14 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		
 		controller = new Controller();
+		toolBar = new ToolBar();
 		loginDialog = new LoginDialog(this);
 		userPanel = new UserPanel();
 		surveyPanel = new SurveyPanel();
 		residentTablePanel = new ResidentTablePanel();
 		rankingTablePanel = new RankingTablePanel();
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, userPanel, residentTablePanel);
+		splitPane.setOneTouchExpandable(true);
 		
 		try {
 			controller.connect();
@@ -88,11 +94,37 @@ public class MainFrame extends JFrame {
 		
 		residentTablePanel.setData(controller.getPeople());
 		rankingTablePanel.setData(controller.getRanking());
+		rankingTablePanel.setSurveyData(controller.getSurveys());
 		
 		residentTablePanel.setResidentTableListener(new ResidentTableListener() {
 			public void rowDeleted(int row) {
 				controller.removePerson(row);
 			}
+		});
+		
+		toolBar.setToolbarListener(new ToolbarListener() {
+			public void logoutEventOccured() {
+				controller.disconnect();
+				System.exit(1);
+			}
+
+			public void refreshEventOccured() {
+				try {
+					controller.load();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					controller.loadRanks();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				residentTablePanel.refresh();
+				rankingTablePanel.refresh();
+			}
+			
 		});
 		
 		userPanel.setUserListener(new UserListener() {
@@ -135,12 +167,13 @@ public class MainFrame extends JFrame {
 		setSize(1600, 800);
 		setVisible(true);
 		
-		add(userPanel, BorderLayout.WEST);
-		add(residentTablePanel, BorderLayout.CENTER);
+		//add(userPanel, BorderLayout.WEST);
+		add(splitPane, BorderLayout.CENTER);
+		add(toolBar, BorderLayout.NORTH);
+	
 		
-		rankingTablePanel.setPreferredSize(new Dimension (1600, 100));
+		rankingTablePanel.setPreferredSize(new Dimension (1600, 200));
 		add(rankingTablePanel, BorderLayout.SOUTH);
-		add(surveyPanel, BorderLayout.EAST);
 	}
 	
 	public void loadData() {
@@ -155,6 +188,7 @@ public class MainFrame extends JFrame {
 			e.printStackTrace();
 		}
 		residentTablePanel.refresh();
+		rankingTablePanel.refresh();
 		//revalidate();
 	}
 }
