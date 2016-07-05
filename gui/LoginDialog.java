@@ -39,8 +39,8 @@ public class LoginDialog extends JDialog{
 		cancelButton = new JButton("Cancel");
 		
 		alertField = new JTextArea();
-		userField = new JTextField(10);
-		passField = new JPasswordField(10);
+		userField = new JTextField(15);
+		passField = new JPasswordField(15);
 		
 		passField.setEchoChar('*');
 		
@@ -77,7 +77,7 @@ public class LoginDialog extends JDialog{
 			}
 		});
 		
-		setSize(300, 200);
+		setSize(420, 200);
 		setVisible(true);
 		setLocationRelativeTo(null);
 	}
@@ -132,12 +132,15 @@ public class LoginDialog extends JDialog{
 		gc.gridx = 0;
 		gc.gridy++;
 		
+		alertField.setBackground(getBackground());
 		buttonsPanel.add(alertField);
 		
 		gc.gridx++;
+		gc.insets = new Insets(0, 0, 0, 5);
 		buttonsPanel.add(okButton);
 		
 		gc.gridx++;
+		gc.insets = new Insets(0, 0, 0, 5);
 		buttonsPanel.add(cancelButton);
 		
 		Dimension btnSize = cancelButton.getPreferredSize();

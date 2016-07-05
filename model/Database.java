@@ -197,7 +197,6 @@ private Connection con;
 		int col = 1;
 		
 			updateStatement.setInt(col++, fields.getAllergy());
-			System.out.println(fields.getAllergy());
 			updateStatement.setInt(col++, fields.getPulmonary());
 			updateStatement.setInt(col++, fields.getCardiology());
 			updateStatement.setInt(col++, fields.getPsychiatry());

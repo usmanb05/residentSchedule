@@ -77,6 +77,7 @@ public class MainFrame extends JFrame {
 			public void surveyEventOccurred(Ranking ranks) {
 				try {
 					controller.submitFields(ranks, userEmail);
+					surveyPanel.setInfoArea("Scheduling Preferences Submitted");
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
