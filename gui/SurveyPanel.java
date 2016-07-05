@@ -15,6 +15,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
+import model.Ranking;
+
 public class SurveyPanel extends JPanel {
 	private JTextArea infoArea;
 	private JButton submitBtn;
@@ -24,59 +26,11 @@ public class SurveyPanel extends JPanel {
 	private JLabel[] labels = new JLabel[totalForms];
 	private JTextField[] fields = new JTextField[totalForms];
 	
-	private String[] names = {"Allergy", "Pulmonary", "Cardiology", "Psychiatry", "Dermatology", "Endocrine", "ENT", "Genetics", "GI", "Gynecology", "Hematology", "ID", "Neurology", "Ophthalmology", "Orthopedics", "Palliative Care", "Renal", "Rheumatology", "Sports Medicine", "Toxicology", "7W", "9W"};
-	
-	
-	private JLabel allergyLabel;
-	private JLabel pulmonaryLabel;
-	private JLabel cardiologyLabel;
-	private JLabel psychiatryLabel;
-	private JLabel dermatologyLabel;
-	private JLabel endocrineLabel;
-	private JLabel entLabel;
-	private JLabel geneticsLabel;
-	private JLabel giLabel;
-	private JLabel gynecologyLabel;
-	private JLabel hematologyLabel;
-	private JLabel idiseaseLabel;
-	private JLabel neurologyLabel;
-	private JLabel ophthalmologyLabel;
-	private JLabel orthopedicsLabel;
-	private JLabel palliativeLabel;
-	private JLabel renalLabel;
-	private JLabel rheumatologyLabel;
-	private JLabel sportsLabel;
-	private JLabel toxicologyLabel;
-	private JLabel sevenWLabel;
-	private JLabel nineWLabel;
-	
-	private JTextField allergyField;
-	private JTextField pulmonaryField;
-	private JTextField cardiologyField;
-	private JTextField psychiatryField;
-	private JTextField dermatologyField;
-	private JTextField endocrineField;
-	private JTextField entField;
-	private JTextField geneticsField;
-	private JTextField giField;
-	private JTextField gynecologyField;
-	private JTextField hematologyField;
-	private JTextField idiseaseField;
-	private JTextField neurologyField;
-	private JTextField ophthalmologyField;
-	private JTextField orthopedicsField;
-	private JTextField palliativeField;
-	private JTextField renalField;
-	private JTextField rheumatologyField;
-	private JTextField sportsField;
-	private JTextField toxicologyField;
-	private JTextField sevenWField;
-	private JTextField nineWField;
-	
-	
+	private String[] labelNames = {"Allergy", "Pulmonary", "Cardiology", "Psychiatry", "Dermatology", "Endocrine", "ENT", "Genetics", "GI", "Gynecology", "Hematology", "ID", "Neurology", "Ophthalmology", "Orthopedics", "Palliative Care", "Renal", "Rheumatology", "Sports Medicine", "Toxicology", "7W", "9W"};
+
 	public SurveyPanel() {
 		Dimension dim = getPreferredSize();
-		dim.width = 300;
+		dim.width = 400;
 		setPreferredSize(dim);
 		
 		infoArea = new JTextArea();
@@ -84,58 +38,30 @@ public class SurveyPanel extends JPanel {
 		
 		submitBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String[] formArray = new String[totalForms];
+				int[] formIntArray = new int[totalForms];
 				
 				for (int i = 0; i < totalForms; i++) {
-					formArray[i] = fields[i].getText();
-					System.out.print(formArray[i] + " ");
+					
+					if (fields[i].getText().isEmpty()) {
+						formIntArray[i] = 0;
+					}
+					else {
+						formIntArray[i] = Integer.parseInt(fields[i].getText());
+					}
 				}
 				
 				if (surveyListener != null) {
-					surveyListener.surveyEventOccurred(formArray);
+					Ranking ranks = new Ranking(formIntArray);
+					System.out.println(ranks.getAllergy());
+					surveyListener.surveyEventOccurred(ranks);
 				}
 			}
 		});
-		
-		/*
-		allergyLabel = new JLabel("Allergy: ");
-		allergyField = new JTextField(5);
-		
-		pulmonaryLabel = new JLabel("Pulmonary: ");
-		pulmonaryField = new JTextField(5);
-		
-		cardiologyLabel = new JLabel("Cardiology: ");
-		cardiologyField = new JTextField(5);
-		
-		psychiatryLabel = new JLabel("Psychiatry: ");
-		psychiatryField = new JTextField(5);
-		
-		dermatologyLabel = new JLabel("Dermatology: ");
-		dermatologyField = new JTextField(5);
-		
-		endocrineLabel = new JLabel("Endocrine: ");
-		endocrineField = new JTextField(5);
-		
-		geneticsLabel = new JLabel("Genetics: ");
-		geneticsField = new JTextField(5);
-		
-		giLabel = new JLabel("GI: ");
-		giField = new JTextField(5);
-		
-		gynecologyLabel = new JLabel("Gynecology: ");
-		gynecologyField = new JTextField(5);
-		
-		*/
-		
-		
-		
 		
 		Border innerBorder = BorderFactory.createTitledBorder("Fill Out Form");
 		Border outBorder = BorderFactory.createEmptyBorder(5, 5, 5, 5);
 		setBorder(BorderFactory.createCompoundBorder(outBorder, innerBorder));
 		layoutComponents();
-		
-		
 	}
 	
 	public void layoutComponents() {
@@ -148,9 +74,9 @@ public class SurveyPanel extends JPanel {
 		gc.gridy = 0;
 		gc.gridx = 0;
 		
-		for (int i = 0; i < names.length; i++) {
+		for (int i = 0; i < labelNames.length; i++) {
 			
-			labels[i] = new JLabel(names[i] + ": ");
+			labels[i] = new JLabel(labelNames[i] + ": ");
 			fields[i] = new JTextField(5);
 			
 			gc.gridy++;
@@ -171,68 +97,15 @@ public class SurveyPanel extends JPanel {
 		gc.insets = new Insets(10, 0, 0, 5);
 		add(submitBtn, gc);
 		
-		
-		/*
-		// First Row
-		gc.gridy = 0;
-		gc.gridx = 0;
-		infoArea.setText("Please rank, in order, as many preferences as you can. \n (1) Most preferred, and (22) Least Preferred");
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(infoArea, gc);
-		
-		
-		// Next Row
-		gc.gridy++;
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(allergyLabel, gc);
-		
-		gc.gridx++;
-		gc.anchor = GridBagConstraints.LINE_START;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(allergyField, gc);
-		
-		// Next Row
-		gc.gridy++;
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(pulmonaryLabel, gc);
-		
-		gc.gridx++;
-		gc.anchor = GridBagConstraints.LINE_START;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(pulmonaryField, gc);
-		
-		// Next Row
-		gc.gridy++;
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(cardiologyLabel, gc);
-		
-		gc.gridx++;
-		gc.anchor = GridBagConstraints.LINE_START;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(cardiologyField, gc);
-		
-		// Next Row
-		gc.gridy++;
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(psychiatryLabel, gc);
-		
-		gc.gridx++;
-		gc.anchor = GridBagConstraints.LINE_START;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(psychiatryField, gc);
-		*/
-		
 	}
 	
 	public void setSurveyListener(SurveyListener listener) {
 		this.surveyListener = listener;
+	}
+	
+	public void validateFields(JTextField[] fields) {
+		for (int i = 0; i < fields.length; i++) {
+			
+		}
 	}
 }

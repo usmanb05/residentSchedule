@@ -2,6 +2,9 @@ package model;
 
 public class Ranking {
 	
+	private String[] fieldNames = {"allergy", "pulmonary", "cardiology", "psychiatry", "dermatology", "endocrine", "ent", "genetics", "gi", "gynecology", "hematology", "idisease", "neurology", "ophthalmology", "orthopedics", "palliative", "renal", "rheumatology", "sports", "toxicology", "sevenW", "nineW"};
+
+	
 	private int allergy;
 	private int pulmonary;
 	private int cardiology;
@@ -25,34 +28,33 @@ public class Ranking {
 	private int sevenW;
 	private int nineW;
 	
-	public Ranking(int allergy, int pulmonary, int cardiology, int psychiatry, int dermatology, int endocrine, int ent, int genetics, int gi, int gynecology, int hematology, int id, int neurology, 
-			int ophthalmology, int orthopedics, int palliative, int renal, int rheumatology, int sports, int toxicology, int sevenW, int nineW) {
-		
-		this.allergy = allergy;
-		this.pulmonary = pulmonary;
-		this.cardiology = cardiology;
-		this.psychiatry = psychiatry;
-		this.dermatology = dermatology;
-		this.endocrine = endocrine;
-		this.ent = ent;
-		this.genetics = genetics;
-		this.gi = gi;
-		this.gynecology = gynecology;
-		this.hematology = hematology;
-		this.id = id;
-		this.neurology = neurology;
-		this.ophthalmology = ophthalmology;
-		this.orthopedics = orthopedics;
-		this.palliative = palliative;
-		this.renal = renal;
-		this.rheumatology = rheumatology;
-		this.sports = sports;
-		this.toxicology = toxicology;
-		this.sevenW = sevenW;
-		this.nineW = nineW;
-		
+	
+	public Ranking(int[] names) {
+			
+			this.allergy = names[0];
+			this.pulmonary = names[1];
+			this.cardiology = names[2];
+			this.psychiatry = names[3];
+			this.dermatology = names[4];
+			this.endocrine = names[5];
+			this.ent = names[6];
+			this.genetics = names[7];
+			this.gi = names[8];
+			this.gynecology = names[9];
+			this.hematology = names[10];
+			this.id = names[11];
+			this.neurology = names[12];
+			this.ophthalmology = names[13];
+			this.orthopedics = names[14];
+			this.palliative = names[15];
+			this.renal = names[16];
+			this.rheumatology = names[17];
+			this.sports = names[18];
+			this.toxicology = names[19];
+			this.sevenW = names[20];
+			this.nineW = names[21];
 	}
-
+	
 	public int getAllergy() {
 		return allergy;
 	}

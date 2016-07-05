@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import controller.Controller;
+import model.Ranking;
 
 public class MainFrame extends JFrame {
 
@@ -18,8 +19,8 @@ public class MainFrame extends JFrame {
 	private ResidentTablePanel residentTablePanel;
 	private RankingTablePanel rankingTablePanel;
 	private LoginDialog loginDialog;
-	private RankingTableDialog rankingTableDialog;
 	private SurveyPanel surveyPanel;
+	private String userEmail;
 	
 	
 	public MainFrame() {
@@ -34,7 +35,6 @@ public class MainFrame extends JFrame {
 		surveyPanel = new SurveyPanel();
 		residentTablePanel = new ResidentTablePanel();
 		rankingTablePanel = new RankingTablePanel();
-		rankingTableDialog = new RankingTableDialog(this);
 		
 		try {
 			controller.connect();
@@ -50,6 +50,7 @@ public class MainFrame extends JFrame {
 				try {
 					if(controller.checkLogin(email, password)) {
 						try {
+							userEmail = email;
 							loginDialog.setVisible(false);
 							boolean isAdmin = controller.isAdmin(email);
 							if (isAdmin) {
@@ -59,7 +60,6 @@ public class MainFrame extends JFrame {
 							else {
 								setUserView();
 							}
-							
 						} catch (SQLException e1) {
 							JOptionPane.showMessageDialog(MainFrame.this, "Cannot load from database", "No data from Database", JOptionPane.ERROR_MESSAGE);
 						}
@@ -71,6 +71,17 @@ public class MainFrame extends JFrame {
 					System.out.println("Could not check login");
 				}
 			}
+		});
+		
+		surveyPanel.setSurveyListener(new SurveyListener() {
+			public void surveyEventOccurred(Ranking ranks) {
+				try {
+					controller.submitFields(ranks, userEmail);
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			
 		});
 				
 		
@@ -114,6 +125,7 @@ public class MainFrame extends JFrame {
 		setMinimumSize(new Dimension(400, 600));
 		setSize(400, 600);
 		setVisible(true);
+		setLocationRelativeTo(null);
 		add(surveyPanel, BorderLayout.WEST);
 	}
 	
@@ -142,10 +154,6 @@ public class MainFrame extends JFrame {
 			e.printStackTrace();
 		}
 		residentTablePanel.refresh();
-		revalidate();
-		
-		//rankingTableDialog.setModal(false);
-		//rankingTableDialog.setVisible(false);
-		//rankingTableDialog.setLocation(null);
+		//revalidate();
 	}
 }

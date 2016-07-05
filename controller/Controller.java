@@ -58,6 +58,10 @@ public class Controller {
 	public void removePerson(int index) {
 		db.removePerson(index);
 	}
+	
+	public void submitFields(Ranking fields, String email) throws SQLException {
+		db.submitFields(fields, email);
+	}
 
 	public void addPerson(UserEvent e) {
 		String name = e.getUsername();
@@ -83,8 +87,8 @@ public class Controller {
 	public void emailPassword(String name, String email, String password) {
 		emailPass.send(name, email, password);
 	}
-	
-	
+
+		
 	
 
 }

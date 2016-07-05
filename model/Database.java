@@ -94,36 +94,19 @@ private Connection con;
 		
 		String sql = "select allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW from users where email=?";
 		PreparedStatement selectStatement = con.prepareStatement(sql);
+		final String[] fieldNames = {"allergy", "pulmonary", "cardiology", "psychiatry", "dermatology", "endocrine", "ent", "genetics", "gi", "gynecology", "hematology", "idisease", "neurology", "ophthalmology", "orthopedics", "palliative", "renal", "rheumatology", "sports", "toxicology", "sevenW", "nineW"};
+		int[] data = new int[22];
 		
 		selectStatement.setString(1, "admin");
 		
 		ResultSet results = selectStatement.executeQuery();
 		
 		while(results.next()) {
-			int allergy = results.getInt("allergy");
-			int pulmonary = results.getInt("pulmonary");
-			int cardiology = results.getInt("cardiology");
-			int psychiatry = results.getInt("psychiatry");
-			int dermatology = results.getInt("dermatology");
-			int endocrine = results.getInt("endocrine");
-			int ent = results.getInt("ent");
-			int genetics = results.getInt("genetics");
-			int gi = results.getInt("gi");
-			int gynecology = results.getInt("gynecology");
-			int hematology = results.getInt("hematology");
-			int idisease = results.getInt("idisease");
-			int neurology = results.getInt("neurology");
-			int ophthalmology = results.getInt("ophthalmology");
-			int orthopedics = results.getInt("orthopedics");
-			int palliative = results.getInt("palliative");
-			int renal = results.getInt("renal");
-			int rheumatology = results.getInt("rheumatology");
-			int sports = results.getInt("sports");
-			int toxicology = results.getInt("toxicology");
-			int sevenW = results.getInt("sevenW");
-			int nineW = results.getInt("nineW");
+			for (int i = 0; i < 22; i++) {
+				data[i] = results.getInt(fieldNames[i]);
+			}
 			
-			Ranking ranks = new Ranking(allergy, pulmonary, cardiology, psychiatry, dermatology, endocrine, ent, genetics, gi, gynecology, hematology, idisease, neurology, ophthalmology, orthopedics, palliative, renal, rheumatology, sports, toxicology, sevenW, nineW);
+			Ranking ranks = new Ranking(data);
 			rankings.add(ranks);
 		}
 		//System.out.println(rankings + " - from Database loadRanks()");
@@ -204,6 +187,43 @@ private Connection con;
 		if (result.next()) return true;
 		
 		else return false;
+	}
+	
+	public void submitFields(Ranking fields, String email) throws SQLException{
+
+		String updataeSql = "update users set allergy=?, pulmonary=?, cardiology=?, psychiatry=?, dermatology=?, endocrine=?, ent=?, genetics=?, gi=?, gynecology=?, hematology=?, idisease=?, neurology=?, ophthalmology=?, orthopedics=?, palliative=?, renal=?, rheumatology=?, sports=?, toxicology=?, sevenW=?, nineW=? where email=?";
+		PreparedStatement updateStatement = con.prepareStatement(updataeSql);
+		
+		int col = 1;
+		
+			updateStatement.setInt(col++, fields.getAllergy());
+			System.out.println(fields.getAllergy());
+			updateStatement.setInt(col++, fields.getPulmonary());
+			updateStatement.setInt(col++, fields.getCardiology());
+			updateStatement.setInt(col++, fields.getPsychiatry());
+			updateStatement.setInt(col++, fields.getDermatology());
+			updateStatement.setInt(col++, fields.getEndocrine());
+			updateStatement.setInt(col++, fields.getEnt());
+			updateStatement.setInt(col++, fields.getGenetics());
+			updateStatement.setInt(col++, fields.getGi());
+			updateStatement.setInt(col++, fields.getGynecology());
+			updateStatement.setInt(col++, fields.getHematology());
+			updateStatement.setInt(col++, fields.getId());
+			updateStatement.setInt(col++, fields.getNeurology());
+			updateStatement.setInt(col++, fields.getOphthalmology());
+			updateStatement.setInt(col++, fields.getOrthopedics());
+			updateStatement.setInt(col++, fields.getPalliative());
+			updateStatement.setInt(col++, fields.getRenal());
+			updateStatement.setInt(col++, fields.getRheumatology());
+			updateStatement.setInt(col++, fields.getSports());
+			updateStatement.setInt(col++, fields.getToxicology());
+			updateStatement.setInt(col++, fields.getSevenW());
+			updateStatement.setInt(col++, fields.getNineW());
+			updateStatement.setString(col++, email);
+			
+			updateStatement.executeUpdate();
+			updateStatement.close();
+			
 	}
 	
 	public boolean checkLogin(String email, String password) throws SQLException {
