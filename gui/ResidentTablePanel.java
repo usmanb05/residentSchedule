@@ -7,11 +7,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
 
 import model.Resident;
 
@@ -26,7 +29,18 @@ public class ResidentTablePanel extends JPanel {
 		residentTableModel = new ResidentTableModel();
 		table = new JTable(residentTableModel);
 		popup = new JPopupMenu();
+		TableColumnModel tcm = table.getColumnModel();
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		
+		table.setCellSelectionEnabled(true);
+		table.getTableHeader().setReorderingAllowed(false);
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		tcm.getColumn(0).setPreferredWidth(5);
+		tcm.getColumn(0).setCellRenderer(centerRenderer);
+		tcm.getColumn(1).setPreferredWidth(400);
+		tcm.getColumn(2).setPreferredWidth(400);
+		tcm.getColumn(3).setPreferredWidth(400);
+
 		JMenuItem removeItem = new JMenuItem("Delete row");
 		popup.add(removeItem);
 		
@@ -49,13 +63,10 @@ public class ResidentTablePanel extends JPanel {
 					residentTableListener.rowDeleted(row);
 					residentTableModel.fireTableRowsDeleted(row, row);
 				}
-				//System.out.println(row);
 			}
-			
 		});
 		
 		setLayout(new BorderLayout());
-		
 		add(new JScrollPane(table), BorderLayout.CENTER);
 	}
 	

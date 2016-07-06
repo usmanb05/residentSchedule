@@ -9,7 +9,7 @@ import model.Resident;
 public class ResidentTableModel extends AbstractTableModel{
 	
 	private List<Resident> db;
-	private String[] colNames = {"Name", "Email", "Password"};
+	private String[] colNames = {"", "Name", "Email", "Password"};
 	
 	public String getColumnName(int column) {
 		return colNames[column];
@@ -30,13 +30,14 @@ public class ResidentTableModel extends AbstractTableModel{
 	@Override
 	public Object getValueAt(int row, int col) {
 		Resident resident = db.get(row);
-		
 		switch(col) {
 		case 0:
-			return resident.getUsername();
+			return row + 1;
 		case 1:
-			return resident.getEmail();
+			return resident.getUsername();
 		case 2:
+			return resident.getEmail();
+		case 3:
 			return resident.getPassword();
 		}
 		return null;

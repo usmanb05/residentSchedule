@@ -24,6 +24,8 @@ public class RankingTablePanel extends JPanel{
 		setLayout(new BorderLayout());
 		add(new JScrollPane(table), BorderLayout.CENTER);
 		
+		table.setCellSelectionEnabled(true);
+		table.getTableHeader().setReorderingAllowed(false);
 	}
 	
 	public void setData(List<Ranking> db) {

@@ -3,11 +3,20 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
+
+import com.sun.glass.events.KeyEvent;
 
 import controller.Controller;
 import model.Ranking;
@@ -24,6 +33,7 @@ public class MainFrame extends JFrame {
 	private String userEmail;
 	private JSplitPane splitPane;
 	private ToolBar toolBar;
+	private JFileChooser fileChooser;
 	
 	
 	public MainFrame() {
@@ -33,6 +43,9 @@ public class MainFrame extends JFrame {
 		setLayout(new BorderLayout());
 		
 		controller = new Controller();
+		fileChooser = new JFileChooser();
+		//fileChooser.addChoosableFileFilter(filter);
+		
 		toolBar = new ToolBar();
 		loginDialog = new LoginDialog(this);
 		userPanel = new UserPanel();
@@ -166,6 +179,7 @@ public class MainFrame extends JFrame {
 		setMinimumSize(new Dimension(1600, 800));
 		setSize(1600, 800);
 		setVisible(true);
+		setJMenuBar(createMenuBar());
 		
 		//add(userPanel, BorderLayout.WEST);
 		add(splitPane, BorderLayout.CENTER);
@@ -190,5 +204,39 @@ public class MainFrame extends JFrame {
 		residentTablePanel.refresh();
 		rankingTablePanel.refresh();
 		//revalidate();
+	}
+	
+	private JMenuBar createMenuBar() {
+		JMenuBar menuBar = new JMenuBar(); 
+		JMenu fileMenu = new JMenu("File");
+		
+		JMenuItem exportDataItem = new JMenuItem("Export Data to PDF...");
+		JMenuItem exitItem = new JMenuItem("Exit");
+		
+		//fileMenu.add(exportDataItem);
+		fileMenu.addSeparator();
+		fileMenu.add(exitItem);
+		
+		exitItem.setMnemonic(KeyEvent.VK_X);
+		
+		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+		
+		exitItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		
+		exportDataItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
+					System.out.println(fileChooser.getSelectedFile());
+				};
+			}
+			
+		});
+		
+		menuBar.add(fileMenu);
+		return menuBar;
 	}
 }
