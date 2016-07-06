@@ -39,13 +39,9 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		super("Resident Ranking Form");
 		
-		//getContentPane().setLayout(new BorderLayout());
 		setLayout(new BorderLayout());
 		
 		controller = new Controller();
-		fileChooser = new JFileChooser();
-		//fileChooser.addChoosableFileFilter(filter);
-		
 		toolBar = new ToolBar();
 		loginDialog = new LoginDialog(this);
 		userPanel = new UserPanel();
@@ -101,12 +97,10 @@ public class MainFrame extends JFrame {
 					e.printStackTrace();
 				}
 			}
-			
 		});
 				
 		
 		residentTablePanel.setData(controller.getPeople());
-		rankingTablePanel.setData(controller.getRanking());
 		rankingTablePanel.setSurveyData(controller.getSurveys());
 		
 		residentTablePanel.setResidentTableListener(new ResidentTableListener() {
@@ -184,7 +178,7 @@ public class MainFrame extends JFrame {
 		add(toolBar, BorderLayout.NORTH);
 	
 		
-		rankingTablePanel.setPreferredSize(new Dimension (1600, 200));
+		rankingTablePanel.setPreferredSize(new Dimension (1600, 400));
 		add(rankingTablePanel, BorderLayout.SOUTH);
 	}
 	
