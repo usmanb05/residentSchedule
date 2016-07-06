@@ -6,6 +6,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -58,10 +59,10 @@ public class SurveyPanel extends JPanel {
 					if (Character.isLetter(c)) {
 						return false;
 					}
-					else return true;
 				}
+				return true;
 		}
-		return false;
+		return true;
 	}
 	
 	public void layoutComponents() {
@@ -134,6 +135,10 @@ public class SurveyPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				infoArea.setText("");
 				int[] formIntArray = new int[totalForms];
+				int[] checkArray = {1, 2, 3, 4, 5, 6};
+				int[] loadArray = new int[checkArray.length];
+				int value = 0;
+				
 				boolean ready = false;
 				
 				for (int i = 0; i < totalForms; i++) {
@@ -146,7 +151,19 @@ public class SurveyPanel extends JPanel {
 						}
 						else {
 							formIntArray[i] = Integer.parseInt(fields[i].getText());
-							ready = true;
+							if (formIntArray[i] > 6 || formIntArray[i] < 1) {
+								infoArea.setText("Please input numerical values between 1 and 6 inclusive");
+							}
+							else {
+								value = formIntArray[i];
+								loadArray[value - 1] = value;
+								if (!Arrays.equals(checkArray, loadArray)) {
+									infoArea.setText("Please input correct number of values");
+								}
+								else {
+									ready = true;
+								}
+							}
 						}
 					}
 				}
@@ -156,7 +173,6 @@ public class SurveyPanel extends JPanel {
 						surveyListener.surveyEventOccurred(ranks);
 					}
 				}
-				
 			}
 		});
 	}
