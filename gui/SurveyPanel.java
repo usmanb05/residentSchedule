@@ -21,6 +21,7 @@ import model.Ranking;
 
 public class SurveyPanel extends JPanel {
 	private JTextArea infoArea;
+	private JTextArea textArea;
 	private JButton submitBtn;
 	private final int totalForms = 22;
 	private SurveyListener surveyListener;
@@ -38,6 +39,7 @@ public class SurveyPanel extends JPanel {
 		//dim.height = 300;
 		setPreferredSize(dim);
 		
+		textArea = new JTextArea();
 		infoArea = new JTextArea();
 		submitBtn = new JButton("Submit");
 		
@@ -94,17 +96,29 @@ public class SurveyPanel extends JPanel {
 		gc.weighty = 3;
 		gc.gridx = 0;
 		gc.gridy++;
+		
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gc.insets = new Insets(10, 0, 0, 5);
+		textArea.setEditable(false);
+		textArea.setBackground(getBackground());
+		textArea.setText("Rank top 6 preferences for your rotations.\n (1) Most Preferable");
+		add(textArea, gc);
+		
+		gc.gridx++;
+		gc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gc.insets = new Insets(10, 0, 0, 5);
+		add(submitBtn, gc);
+		
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.gridwidth = 2;
+		gc.fill = GridBagConstraints.HORIZONTAL;
 		infoArea.setEditable(false);
 		infoArea.setSize(getPreferredSize());
 		infoArea.setBackground(getBackground());
 		gc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gc.insets = new Insets(16, 20, 0, 5);
 		add(infoArea, gc);
-		
-		gc.gridx++;
-		gc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gc.insets = new Insets(10, 0, 0, 5);
-		add(submitBtn, gc);
 		
 	}
 	
@@ -124,7 +138,7 @@ public class SurveyPanel extends JPanel {
 				
 				for (int i = 0; i < totalForms; i++) {
 					if (!validateCharacters(fields[i].getText())) {
-						infoArea.setText("Please enter only numerical values.");
+						infoArea.setText("Please follow above guidelines before submitting.");
 					}
 					else {
 						if (fields[i].getText().isEmpty()) {

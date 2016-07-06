@@ -125,13 +125,11 @@ public class MainFrame extends JFrame {
 				try {
 					controller.load();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				try {
 					controller.loadRanks();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				residentTablePanel.refresh();
@@ -211,7 +209,7 @@ public class MainFrame extends JFrame {
 		JMenu fileMenu = new JMenu("File");
 		
 		JMenuItem exportDataItem = new JMenuItem("Export Data to PDF...");
-		JMenuItem exitItem = new JMenuItem("Exit");
+		JMenuItem exitItem = new JMenuItem("Logout");
 		
 		//fileMenu.add(exportDataItem);
 		fileMenu.addSeparator();
