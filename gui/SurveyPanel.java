@@ -26,7 +26,6 @@ public class SurveyPanel extends JPanel {
 	private JButton submitBtn;
 	private final int totalForms = 22;
 	private SurveyListener surveyListener;
-	private SpinnerNumberModel spinnerModel;
 	
 	private JLabel[] labels = new JLabel[totalForms];
 	private JTextField[] fields = new JTextField[totalForms];
