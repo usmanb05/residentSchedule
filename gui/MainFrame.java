@@ -36,24 +36,25 @@ public class MainFrame extends JFrame {
 	private JSplitPane splitPane;
 	private ToolBar toolBar;
 	private JFileChooser fileChooser;
-	
-	
+
 	public MainFrame() {
 		super("Resident Ranking Form");
-		
+
+		// Set Look and Feel Theme
 		try {
-		    for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-		        if ("Nimbus".equals(info.getName())) {
-		            UIManager.setLookAndFeel(info.getClassName());
-		            break;
-		        }
-		    }
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
 		} catch (Exception e) {
-		    // If Nimbus is not available, you can set the GUI to another look and feel.
+			// If Nimbus is not available, you can set the GUI to another look
+			// and feel.
 		}
-		
+
 		setLayout(new BorderLayout());
-		
+
 		controller = new Controller();
 		toolBar = new ToolBar();
 		loginDialog = new LoginDialog(this);
@@ -63,20 +64,26 @@ public class MainFrame extends JFrame {
 		rankingTablePanel = new RankingTablePanel();
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, userPanel, residentTablePanel);
 		splitPane.setOneTouchExpandable(true);
-		
+
+		// Connect to Database
 		try {
 			controller.connect();
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(MainFrame.this, "Cannot connect to database", "Database Connection Problem", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(MainFrame.this, "Cannot connect to database", "Database Connection Problem",
+					JOptionPane.ERROR_MESSAGE);
 		}
-		
+
+		/*
+		 * Set Login Dialog - Accesses Database to ensure correct login and
+		 * password Will set appropriate view based on account
+		 */
 		loginDialog.setModal(true);
 		loginDialog.setVisible(true);
 		loginDialog.setLocationRelativeTo(null);
 		loginDialog.setLoginListener(new LoginListener() {
 			public void loginSet(String email, String password) {
 				try {
-					if(controller.checkLogin(email, password)) {
+					if (controller.checkLogin(email, password)) {
 						try {
 							userEmail = email;
 							loginDialog.setVisible(false);
@@ -84,15 +91,14 @@ public class MainFrame extends JFrame {
 							if (isAdmin) {
 								setAdminView();
 								loadData();
-							}
-							else {
+							} else {
 								setUserView();
 							}
 						} catch (SQLException e1) {
-							JOptionPane.showMessageDialog(MainFrame.this, "Cannot load from database", "No data from Database", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(MainFrame.this, "Cannot load from database",
+									"No data from Database", JOptionPane.ERROR_MESSAGE);
 						}
-					}
-					else {
+					} else {
 						loginDialog.setAlert("Incorrect Login, Try again");
 					}
 				} catch (SQLException e2) {
@@ -100,7 +106,10 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		
+
+		/*
+		 * Set Survey Panel - Panel is where users can submit ranking form
+		 */
 		surveyPanel.setSurveyListener(new SurveyListener() {
 			public void surveyEventOccurred(Ranking ranks) {
 				try {
@@ -111,17 +120,15 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-				
-		
+
 		residentTablePanel.setData(controller.getPeople());
 		rankingTablePanel.setSurveyData(controller.getSurveys());
-		
 		residentTablePanel.setResidentTableListener(new ResidentTableListener() {
 			public void rowDeleted(int row) {
 				controller.removePerson(row);
 			}
 		});
-		
+
 		toolBar.setToolbarListener(new ToolbarListener() {
 			public void logoutEventOccured() {
 				controller.disconnect();
@@ -142,20 +149,20 @@ public class MainFrame extends JFrame {
 				residentTablePanel.refresh();
 				rankingTablePanel.refresh();
 			}
-			
+
 		});
-		
+
 		userPanel.setUserListener(new UserListener() {
 			public void userEventOccurred(UserEvent e) {
 				String name = e.getUsername();
 				String userEmail = e.getEmail();
 				String password = e.getPassword();
-				
+
 				try {
 					if (controller.checkEmail(userEmail)) {
-						JOptionPane.showMessageDialog(MainFrame.this, "User Email already in database", "Database Message", JOptionPane.ERROR_MESSAGE);
-					}
-					else {
+						JOptionPane.showMessageDialog(MainFrame.this, "User Email already in database",
+								"Database Message", JOptionPane.ERROR_MESSAGE);
+					} else {
 						userPanel.setAlertField("User Added");
 						controller.addPerson(e);
 						residentTablePanel.refresh();
@@ -166,12 +173,12 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		
+
 		setMinimumSize(new Dimension(1600, 1000));
 		setSize(1600, 1000);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
 	public void setUserView() {
 		setMinimumSize(new Dimension(400, 600));
 		setSize(400, 600);
@@ -179,22 +186,21 @@ public class MainFrame extends JFrame {
 		setLocationRelativeTo(null);
 		add(surveyPanel, BorderLayout.WEST);
 	}
-	
+
 	public void setAdminView() {
 		setMinimumSize(new Dimension(1600, 800));
 		setSize(1600, 800);
 		setVisible(true);
 		setJMenuBar(createMenuBar());
-		
-		//add(userPanel, BorderLayout.WEST);
+
+		// add(userPanel, BorderLayout.WEST);
 		add(splitPane, BorderLayout.CENTER);
 		add(toolBar, BorderLayout.NORTH);
-	
-		
-		rankingTablePanel.setPreferredSize(new Dimension (1600, 400));
+
+		rankingTablePanel.setPreferredSize(new Dimension(1600, 400));
 		add(rankingTablePanel, BorderLayout.SOUTH);
 	}
-	
+
 	public void loadData() {
 		try {
 			controller.load();
@@ -208,39 +214,40 @@ public class MainFrame extends JFrame {
 		}
 		residentTablePanel.refresh();
 		rankingTablePanel.refresh();
-		//revalidate();
+		// revalidate();
 	}
-	
+
 	private JMenuBar createMenuBar() {
-		JMenuBar menuBar = new JMenuBar(); 
+		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
-		
+
 		JMenuItem exportDataItem = new JMenuItem("Export Data to PDF...");
 		JMenuItem exitItem = new JMenuItem("Logout");
-		
-		//fileMenu.add(exportDataItem);
+
+		// fileMenu.add(exportDataItem);
 		fileMenu.addSeparator();
 		fileMenu.add(exitItem);
-		
+
 		exitItem.setMnemonic(KeyEvent.VK_X);
-		
+
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-		
+
 		exitItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
 		});
-		
+
 		exportDataItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
 					System.out.println(fileChooser.getSelectedFile());
-				};
+				}
+				;
 			}
-			
+
 		});
-		
+
 		menuBar.add(fileMenu);
 		return menuBar;
 	}
